@@ -1,4 +1,4 @@
-package com.example.exampleplugin.config;
+package net.babblebot.musicplugin.config;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

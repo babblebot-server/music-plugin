@@ -1,7 +1,5 @@
-package com.example.exampleplugin;
+package net.babblebot.musicplugin;
 
-import com.example.exampleplugin.config.DevProperties;
-import com.example.exampleplugin.config.ExamplePluginConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +7,10 @@ import lombok.val;
 import net.babblebot.BabblebotApplication;
 import net.babblebot.api.IApplication;
 import net.babblebot.api.config.EPluginPermission;
+import net.babblebot.api.plugins.IPluginContainer;
 import net.babblebot.api.plugins.PluginType;
+import net.babblebot.musicplugin.config.DevProperties;
+import net.babblebot.musicplugin.config.MusicPluginConfig;
 import net.babblebot.plugins.PluginConfigParser;
 import net.babblebot.plugins.PluginModel;
 import org.springframework.boot.CommandLineRunner;
@@ -45,24 +46,23 @@ public class DevMain {
         return args -> {
             registerPluginToDependencyInjector(gac);
             String config = setupPluginConfig(gac, parser);
-            ExamplePlugin plugin = app.get(ExamplePlugin.class);
+            MusicPlugin plugin = app.get(MusicPlugin.class);
             addPluginToPluginContainer(plugin, app, config);
         };
     }
 
-    private void addPluginToPluginContainer(ExamplePlugin plugin, IApplication app, String config) {
-        app.getPluginContainer()
-                .addPlugin(
-                        plugin,
-                        PluginModel
-                                .builder()
-                                .name("example")
-                                .pluginType(PluginType.JAVA)
-                                .config(config)
-                                .namespace("ep")
-                                .pluginPermissions(EPluginPermission.all())
-                                .build()
-                );
+    private void addPluginToPluginContainer(MusicPlugin plugin, IApplication app, String config) {
+        IPluginContainer container = app.get(IPluginContainer.class);
+        container.addPlugin(
+                plugin,
+                PluginModel
+                        .builder()
+                        .pluginType(PluginType.JAVA)
+                        .config(config)
+                        .namespace("music")
+                        .pluginPermissions(EPluginPermission.all())
+                        .build()
+        );
     }
 
     @SneakyThrows
@@ -72,12 +72,17 @@ public class DevMain {
         val pluginProps = properties.getPlugin();
         val str = parser.pluginConfigToString(pluginProps);
         ObjectMapper mapper = new ObjectMapper();
-        ExamplePluginConfig config = mapper.readValue(str, ExamplePluginConfig.class);
-        gac.registerBean(ExamplePluginConfig.class, () -> config);
+        MusicPluginConfig config = mapper.readValue(str, MusicPluginConfig.class);
+        if (config == null) {
+            config = MusicPluginConfig.builder().build();
+        }
+        MusicPluginConfig finalConfig = config;
+        gac.registerBean(MusicPluginConfig.class, () -> finalConfig);
+        log.info("Registered config: {}", config);
         return parser.pluginConfigToString(config);
     }
 
     private void registerPluginToDependencyInjector(GenericApplicationContext gac) {
-        gac.registerBean(ExamplePlugin.class);
+        gac.registerBean(MusicPlugin.class);
     }
 }

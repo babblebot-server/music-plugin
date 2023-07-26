@@ -6,11 +6,11 @@ plugins {
 sourceCompatibility = '17'
 targetCompatibility = '17'
 
-group 'com.example'
+group 'net.babblebot'
 
 ext {
     mainDevClass = "${project.group}.${rootProject.name}.DevMain".toString()
-    babblebotVersion = 'v3.0.0-rc.26'
+    babblebotVersion = 'v3.0.0-rc.27'
 }
 
 
@@ -26,6 +26,13 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-jpa:3.1.0"
     annotationProcessor 'org.projectlombok:lombok:1.18.28'
     implementation 'org.slf4j:slf4j-api:2.0.7'
+
+    implementation 'org.javassist:javassist:3.26.0-GA'
+    implementation 'com.github.walkyst:lavaplayer-fork:1.4.2'
+
+    implementation 'com.discord4j.discord4j:discord4j-voice:3.2.4'
+    implementation 'com.discord4j.discord4j:discord4j-core:3.2.4'
+    api 'com.github.kokorin.jaffree:jaffree:0.9.3'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.1.0'
 }

@@ -1,6 +1,5 @@
-package com.example.exampleplugin.command;
+package net.babblebot.musicplugin.command;
 
-import com.example.exampleplugin.config.ExamplePluginConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,8 +13,8 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class GetConfigCommand {
-    public String execute(ExamplePluginConfig config) {
-        return config.toString();
+public class PingCommand {
+    public String execute() {
+        return "pong!";
     }
 }

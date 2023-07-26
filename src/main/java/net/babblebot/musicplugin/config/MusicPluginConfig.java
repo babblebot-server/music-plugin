@@ -1,4 +1,4 @@
-package com.example.exampleplugin.config;
+package net.babblebot.musicplugin.config;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.babblebot.api.plugins.PluginConfig;
 
 /**
- * Edit me
+ * Music Plugin Configuration Class
  *
  * @author me@bdavies (Ben Davies)
  * @since 1.0.0
@@ -17,6 +17,5 @@ import net.babblebot.api.plugins.PluginConfig;
 @Data
 @Builder
 @Jacksonized
-public class ExamplePluginConfig {
-    private String someValue;
+public class MusicPluginConfig {
 }
