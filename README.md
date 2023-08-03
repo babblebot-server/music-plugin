@@ -1,14 +1,16 @@
 <p align="center"><img src="https://avatars.githubusercontent.com/u/138989349" alt="BabbleBot-Server" width="320" height="320" /></p>  
 
 <h1 align="center">
-   Example Plugin Template
+   Music Plugin
 </h1>
 
 ## Description
 
-This plugin is an example plugin designed to show off to the community how
-to develop plugins for [babblebot-server](https://code.babblebot.net)
-this example includes how to implement Plugin Config and a Database Entity
+This plugin allows your bot to join a voice channel and play audio under the hood it uses 
+[lavaplayer](https://github.com/Walkyst/lavaplayer-fork) which you can look at the formats it supports
+
+**Disclaimer**: Although Lavaplayer supports YouTube and other platforms this plugin does not endorse using 
+these platforms and suggests using self-hosted platforms to play audio for your bot
 
 ## Commands
 

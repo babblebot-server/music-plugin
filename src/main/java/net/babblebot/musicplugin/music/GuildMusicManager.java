@@ -2,12 +2,12 @@ package net.babblebot.musicplugin.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import discord4j.voice.AudioProvider;
-import discord4j.voice.VoiceConnection;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.babblebot.api.IDiscordFacade;
+import net.dv8tion.jda.api.audio.AudioSendHandler;
+import net.dv8tion.jda.api.managers.AudioManager;
 
 /**
  * This handles an AudioPlayer per Guild which allows your bot to run in multiple guilds.
@@ -26,13 +26,13 @@ public class GuildMusicManager {
 
     @Getter
     @Setter
-    private VoiceConnection voiceConnection;
+    private AudioManager audioManager;
 
     @Getter
     @Setter
     private boolean hasBeenSummoned = false;
 
-    private final AudioProvider provider;
+    private final AudioSendHandler provider;
 
     public GuildMusicManager(final AudioPlayerManager manager, final IDiscordFacade facade) {
         this.player = manager.createPlayer();
@@ -41,7 +41,7 @@ public class GuildMusicManager {
         this.player.addListener(queue);
     }
 
-    public AudioProvider getAudioProvider() {
+    public AudioSendHandler getAudioProvider() {
         return provider;
     }
 }

@@ -100,6 +100,7 @@ public class MusicPlayer {
                 .build();
         return EmbedMessage.builder()
                 .title(track.getInfo().title)
+                .thumbnail(track.getInfo().artworkUrl)
                 .description(desc)
                 .addField(songUrlField)
                 .addField(songLengthField)

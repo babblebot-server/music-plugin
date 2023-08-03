@@ -17,7 +17,7 @@ import net.babblebot.musicplugin.command.*;
  * @author me@bdavies (Ben Davies)
  * @since 1.0.0
  */
-@Plugin(value = "music-plugin", minServerVersion = "3.0.0-rc.27", author = "Ben Davies <me@bdavies.net>")
+@Plugin(value = "music-plugin", minServerVersion = "3.0.0-rc.30", author = "Ben Davies <me@bdavies.net>")
 @RequiredArgsConstructor
 @Slf4j
 public class MusicPlugin {

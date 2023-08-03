@@ -1,16 +1,16 @@
 package net.babblebot.musicplugin.command;
 
-import discord4j.core.object.entity.channel.VoiceChannel;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import net.babblebot.api.command.ICommandContext;
 import net.babblebot.api.obj.message.discord.DiscordMessage;
 import net.babblebot.api.obj.message.discord.embed.EmbedMessage;
+import net.babblebot.discord.obj.factories.DiscordGuildFactory;
 import net.babblebot.musicplugin.music.GuildMusicManager;
 import net.babblebot.musicplugin.music.MusicPlayer;
 import net.babblebot.musicplugin.music.exception.TrackNotFoundException;
-import net.babblebot.musicplugin.service.DiscordObjectService;
 import net.babblebot.musicplugin.service.MusicMangerService;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 public class PlayCommand extends SummonedCommand<EmbedMessage> {
     private final MusicPlayer musicPlayer;
 
-    public PlayCommand(MusicMangerService service, DiscordObjectService discordObjectService, MusicPlayer musicPlayer) {
+    public PlayCommand(MusicMangerService service, DiscordGuildFactory discordObjectService, MusicPlayer musicPlayer) {
         super(service, discordObjectService);
         this.musicPlayer = musicPlayer;
     }

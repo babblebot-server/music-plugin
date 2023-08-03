@@ -1,14 +1,14 @@
 package net.babblebot.musicplugin.command;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import discord4j.core.object.entity.channel.VoiceChannel;
 import lombok.extern.slf4j.Slf4j;
 import net.babblebot.api.command.ICommandContext;
 import net.babblebot.api.obj.message.discord.DiscordMessage;
 import net.babblebot.api.obj.message.discord.embed.EmbedMessage;
+import net.babblebot.discord.obj.factories.DiscordGuildFactory;
 import net.babblebot.musicplugin.music.GuildMusicManager;
-import net.babblebot.musicplugin.service.DiscordObjectService;
 import net.babblebot.musicplugin.service.MusicMangerService;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class PauseCommand extends PlayerControlsCommand<EmbedMessage> {
-    public PauseCommand(MusicMangerService service, DiscordObjectService discordObjectService) {
+    public PauseCommand(MusicMangerService service, DiscordGuildFactory discordObjectService) {
         super(service, discordObjectService);
     }
 

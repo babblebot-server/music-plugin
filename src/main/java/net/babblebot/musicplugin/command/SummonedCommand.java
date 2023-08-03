@@ -1,17 +1,17 @@
 package net.babblebot.musicplugin.command;
 
-import discord4j.core.object.entity.Member;
-import discord4j.core.object.entity.PartialMember;
-import discord4j.core.object.entity.channel.VoiceChannel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import net.babblebot.api.command.ICommandContext;
 import net.babblebot.api.obj.message.discord.DiscordMessage;
+import net.babblebot.discord.obj.factories.DiscordGuildFactory;
 import net.babblebot.musicplugin.music.GuildMusicManager;
-import net.babblebot.musicplugin.service.DiscordObjectService;
+import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.babblebot.musicplugin.service.MusicMangerService;
-import reactor.core.publisher.Mono;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.unions.AudioChannelUnion;
 
 import java.util.Optional;
 
@@ -25,7 +25,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public abstract class SummonedCommand<T> {
     private final MusicMangerService service;
-    private final DiscordObjectService discordObjectService;
+    private final DiscordGuildFactory discordGuildFactory;
 
     public final T exec(ICommandContext commandContext, DiscordMessage message) {
         GuildMusicManager gmm = service.getMusicManager(message.getGuild());
@@ -35,15 +35,19 @@ public abstract class SummonedCommand<T> {
             return null;
         }
 
-        Mono<Member> member = discordObjectService.memberFromDiscordUser(message.getGuild(), message.getAuthor());
-        Optional<VoiceChannel> channelOpt = member.flatMap(PartialMember::getVoiceState)
-                .blockOptional()
-                .flatMap(vs -> vs.getChannel().blockOptional());
+        Optional<VoiceChannel> botChannelOpt = Optional.ofNullable(gmm.getAudioManager().getConnectedChannel())
+                .map(AudioChannelUnion::asVoiceChannel);
+
+        Optional<Member> member =
+                discordGuildFactory.makeInternalFromId(message.getGuild().getId().toLong())
+                        .map(g -> g.getMemberById(message.getAuthor().getId().toLong()));
+        Optional<VoiceChannel> channelOpt = member.map(Member::getVoiceState)
+                .map(GuildVoiceState::getChannel)
+                .map(AudioChannelUnion::asVoiceChannel);
 
         if (channelOpt.isPresent()) {
             val channel = channelOpt.get();
-            val botChannelId = gmm.getVoiceConnection().getChannelId().blockOptional().orElseThrow();
-            if (channel.getId().equals(botChannelId)) {
+            if (botChannelOpt.isPresent() && botChannelOpt.get().getId().equals(channel.getId())) {
                 return exec(commandContext, message, gmm, channel);
             } else {
                 commandContext.getCommandResponse()
